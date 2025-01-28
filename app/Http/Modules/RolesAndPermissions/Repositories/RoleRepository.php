@@ -22,7 +22,7 @@ class RoleRepository extends BaseRepository
     {
         return $this->modelRole->select('*')
             ->when(tenancy()->initialized, function ($query) {
-                $query->where('name', '!=', 'admin');
+                $query->where('name', '!=', 'super-admin');
             })
             ->where('name', $name)
             ->get();
@@ -60,7 +60,7 @@ class RoleRepository extends BaseRepository
         return $this->model->select('id', 'name', 'description')
             ->withCount('permissions')
             ->when(tenancy()->initialized, function ($query) {
-                $query->where('name', '!=', 'admin');
+                $query->where('name', '!=', 'super-admin');
             })
             ->get();
     }
@@ -77,7 +77,7 @@ class RoleRepository extends BaseRepository
         return $this->model->select('id', 'name', 'description')
             ->withCount('permissions')
             ->when(tenancy()->initialized, function ($query) {
-                $query->where('name', '!=', 'admin');
+                $query->where('name', '!=', 'super-admin');
             })
             ->where('name', 'like', '%' . $search . '%')
             ->paginate($limit);
@@ -93,7 +93,7 @@ class RoleRepository extends BaseRepository
     {
         return $this->model->select('id', 'name', 'description', 'guard_name')
             ->when(tenancy()->initialized, function ($query) {
-                $query->where('name', '!=', 'admin');
+                $query->where('name', '!=', 'super-admin');
             })
             ->findOrFail($id);
     }
@@ -108,7 +108,7 @@ class RoleRepository extends BaseRepository
     {
         return $this->model->select('id', 'name', 'description', 'guard_name')
             ->when(tenancy()->initialized, function ($query) {
-                $query->where('name', '!=', 'admin');
+                $query->where('name', '!=', 'super-admin');
             })
             ->where('name', $name)
             ->first();

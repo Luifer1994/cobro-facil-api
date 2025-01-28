@@ -27,4 +27,5 @@ Route::middleware([
     require base_path('routes/api/Users/UserRoutes.php');
     require base_path('routes/api/Cities/CityRoutes.php');
     require base_path('routes/api/DocumentTypes/DocumentTypesRoutes.php');
+    require base_path('routes/api/RolesAndPermissions/RolesAndPermissionRoutes.php');
 });

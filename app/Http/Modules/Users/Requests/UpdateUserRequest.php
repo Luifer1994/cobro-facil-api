@@ -26,7 +26,7 @@ class UpdateUserRequest extends BaseFormRequest
         return [
             'name'             => 'required|string:max:255',
             'email'            => 'required|email|unique:users,email,' . $this->id . ',id',
-            'role'             => 'required|exists:roles,name',
+            'role_id'             => 'required|exists:roles,id',
             'password'         => 'nullable|string|min:8',
         ];
     }
@@ -46,8 +46,8 @@ class UpdateUserRequest extends BaseFormRequest
             'password.required'         => 'El campo contraseña es obligatorio',
             'password.string'           => 'El campo contraseña debe ser un string',
             'password.min'              => 'El campo contraseña debe tener mínimo 8 caracteres',
-            'role.required'             => 'El campo rol es obligatorio',
-            'role.exists'               => 'El rol no existe',
+            'role_id.required'          => 'El campo rol es obligatorio',
+            'role_id.exists'            => 'El rol no existe',
         ];
     }
 }
