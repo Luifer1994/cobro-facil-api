@@ -20,12 +20,6 @@ class UserController extends BaseController
         protected UserService $userService
     ) {}
 
-    /**
-     * Create a new user.
-     *
-     * @param  CreateUserRequest $request
-     * @return JsonResponse
-     */
     public function store(CreateUserRequest $request): JsonResponse
     {
         try {
@@ -36,13 +30,6 @@ class UserController extends BaseController
         }
     }
 
-    /**
-     * Get all users.
-     *
-     * @param  BasePaginateRequest $request
-     * @return JsonResponse
-     * @author Luifer Almendrales
-     */
     public function index(BasePaginateRequest $request): JsonResponse
     {
         try {
@@ -54,13 +41,6 @@ class UserController extends BaseController
         }
     }
 
-    /**
-     * Get user by id.
-     *
-     * @param  int $id
-     * @return JsonResponse
-     * @author Luifer Almendrales
-     */
     public function show(int $id): JsonResponse
     {
         try {
@@ -72,14 +52,6 @@ class UserController extends BaseController
         }
     }
 
-    /**
-     * Update a user.
-     *
-     * @param  UpdateUserRequest $request
-     * @param  int $id (user id)
-     * @return JsonResponse
-     * @author Luifer Almendrales
-     */
     public function update(UpdateUserRequest $request, int $id): JsonResponse
     {
         try {
@@ -90,13 +62,6 @@ class UserController extends BaseController
         }
     }
 
-    /**
-     * Change password.
-     *
-     * @param  ChangePasswordRequest $request
-     * @return JsonResponse
-     * @author Luifer Almendrales
-     */
     public function changePassword(ChangePasswordRequest $request): JsonResponse
     {
         try {
@@ -107,12 +72,6 @@ class UserController extends BaseController
         }
     }
 
-    /**
-     * Change status.
-     *
-     * @param  int $id
-     * @return JsonResponse
-     */
     public function changeStatus(int $id): JsonResponse
     {
         try {

@@ -7,5 +7,7 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionRepository extends BaseRepository
 {
-    function __construct(protected Permission $model) {}
+    function __construct(protected Permission $modelPermissions) {
+            parent::__construct($modelPermissions);
+    }
 }

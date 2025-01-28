@@ -78,8 +78,9 @@ class RolesAndPermissionsManyCommand extends Command
                     'group'       => 'Roles y permisos'
                 ]
             ];
-            $role        = Role::where('name', 'admin')->first();
-            $roleSystem = Role::where('name', 'admin_system')->first();
+            $role        = Role::where('name', 'super-admin')->first();
+            $roleSystem = Role::where('name', 'admin')->first();
+
             foreach ($permissions as  $value) {
                 $permission = Permission::firstOrCreate($value);
                 $role->givePermissionTo($permission);

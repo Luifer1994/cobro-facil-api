@@ -56,7 +56,7 @@ class CityRepository extends BaseRepository
      * @param  string $search
      * @return object
      */
-    public function getAllCities($limit, $search): object
+    public function getAllCities(/* $limit,  */$search): object
     {
         return $this->cityModel
             ->select('id', 'name', 'department_id')
@@ -65,7 +65,7 @@ class CityRepository extends BaseRepository
                 $query->select('id', 'name', 'country_id')
                     ->with(['country:id,name']);
             }])
-            ->limit($limit)
+            /* ->limit($limit) */
             ->get();
     }
 }

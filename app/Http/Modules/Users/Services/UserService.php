@@ -32,7 +32,7 @@ class UserService extends BaseService
             $data = $request->validated();
             $data['password'] = bcrypt($data['password']);
             $user = $this->userRepository->create($data);
-            $role = $this->roleRepository->findByName($request->role);
+            $role = $this->roleRepository->find($request->role_id);
             $user->assignRole($role);
             DB::commit();
             return Result::success(message: 'Registro creado con éxito');
@@ -64,10 +64,10 @@ class UserService extends BaseService
                 $user->fill($request->all());
                 $user   = $this->userRepository->save($user, $request);
 
-                if ($request->role) {
+                if ($request->role_id) {
                     $user->syncRoles([]);
-                    $roles  = $this->roleRepository->getRolesByNames($request->role);
-                    $user->syncRoles($roles);
+                    $role  = $this->roleRepository->find($request->role_id);
+                    $user->assignRole($role);
                 }
                 DB::commit();
                 return Result::success(message: 'Usuario actualizado correctamente');

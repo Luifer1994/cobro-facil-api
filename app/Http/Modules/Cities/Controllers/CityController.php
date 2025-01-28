@@ -58,9 +58,8 @@ class CityController extends BaseController
     public function all(BasePaginateRequest $request): JsonResponse
     {
         try {
-            $limit  = $request->limit ?? 30;
             $search = $request->search ?? '';
-            return $this->response(Result::success('Ciudades obtenidas con éxito', $this->cityRepository->getAllCities($limit, $search)));
+            return $this->response(Result::success('Ciudades obtenidas con éxito', $this->cityRepository->getAllCities($search)));
         } catch (\Throwable $th) {
             return $this->response(Result::failure(error: 'Error al listar las ciudades', message: $th->getMessage()));
         }
