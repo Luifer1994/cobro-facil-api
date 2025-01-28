@@ -50,16 +50,6 @@ class Client extends Model
 		'document_type_id'
 	];
 
-	public function document_type()
-	{
-		return $this->belongsTo(DocumentType::class);
-	}
-
-	public function user()
-	{
-		return $this->belongsTo(User::class);
-	}
-
 	public function client_locations()
 	{
 		return $this->hasMany(ClientLocation::class);
