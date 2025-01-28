@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->comment('Name of the user');
             $table->string('email')->unique()->comment('Email of the user');
+            $table->string('phone')->nullable()->comment('Phone of the user');
             $table->boolean('is_active')->default(true)->comment('Is the user active?');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->comment('Password of the user');
