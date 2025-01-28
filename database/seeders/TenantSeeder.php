@@ -15,6 +15,9 @@ class TenantSeeder extends Seeder
         $this->call(
             [
                 UserTenantSeeder::class,
+                DocumentTypeSeeder::class,
+                CountrySeeder::class,
+                DepartmentSeeder::class,
             ]
         );
 
