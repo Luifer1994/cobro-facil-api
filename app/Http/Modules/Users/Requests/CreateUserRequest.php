@@ -28,6 +28,7 @@ class CreateUserRequest extends BaseFormRequest
             'email'    => 'required|email|unique:users',
             'password' => 'required|string|min:8',
             'role_id'     => 'required|exists:roles,id',
+            'phone'    => 'required|string|min:10',
         ];
     }
 
@@ -43,6 +44,7 @@ class CreateUserRequest extends BaseFormRequest
             'email'    => 'correo electrónico',
             'password' => 'contraseña',
             'role_id'     => 'rol',
+            'phone'    => 'teléfono',
         ];
     }
 }
