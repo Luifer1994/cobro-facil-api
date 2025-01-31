@@ -60,4 +60,18 @@ class ClientController extends BaseController
             return $this->response(Result::failure(error: 'Error al actualizar el client', message: $th->getMessage()));
         }
     }
+
+    /**
+     * Get all clients.
+     *
+     * @return JsonResponse
+     */
+    public function all(): JsonResponse
+    {
+        try {
+            return $this->response(Result::success('Clients obtenidos con éxito', $this->clientRepository->getAll()));
+        } catch (\Throwable $th) {
+            return $this->response(Result::failure(error: 'Error al obtener los clientes', message: $th->getMessage()));
+        }
+    }
 }

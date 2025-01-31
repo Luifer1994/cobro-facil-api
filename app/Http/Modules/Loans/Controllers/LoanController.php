@@ -3,6 +3,7 @@
 namespace App\Http\Modules\Loans\Controllers;
 
 use App\Http\Bases\BaseController;
+use App\Http\Bases\BasePaginateRequest;
 use App\Http\Modules\Loans\Repositories\LoanRepository;
 use App\Http\Modules\Loans\Requests\CreateLoanRequest;
 use App\Http\Modules\Loans\Services\LoanService;
@@ -37,6 +38,23 @@ class LoanController extends BaseController
             return $this->response($result);
         } catch (\Throwable $th) {
             return $this->response(Result::failure(error: 'Error al crear el prestamo', message: $th->getMessage()));
+        }
+    }
+
+    /**
+     * List all loans.
+     * 
+     * @param  BasePaginateRequest
+     * @return JsonResponse
+     */ 
+    public function index(BasePaginateRequest $request): JsonResponse
+    {
+        $limit = $request->limit ?? 10;
+        $search = $request->search ?? '';
+        try {
+            return $this->response(Result::success(message: 'Listado de prestamos exitoso', value: $this->loanRepository->index($limit, $search)));
+        } catch (\Throwable $th) {
+            return $this->response(Result::failure(error: 'Error al obtener las prestamos '.$th->getMessage(), message: $th->getMessage()));
         }
     }
 }

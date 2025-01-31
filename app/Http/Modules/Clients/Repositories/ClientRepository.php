@@ -5,6 +5,7 @@ namespace App\Http\Modules\Clients\Repositories;
 use App\Http\Bases\BaseRepository;
 use App\Http\Modules\Clients\Models\Client;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class ClientRepository extends BaseRepository
 {
@@ -61,5 +62,17 @@ class ClientRepository extends BaseRepository
     public function create(array $data): Client
     {
         return $this->clientModel->create($data);
+    }
+
+    /**
+     * Get all clients.
+     *
+     * @return Collection
+     */
+    public function getAll(): Collection
+    {
+        return $this->clientModel->select('id', 'document', 'name', 'phone', 'email', 'address', 'user_id', 'document_type_id')
+            ->with(['document_type:id,name,code', 'user:id,name', 'client_locations:id,latitude,longitude,client_id,user_id'])
+            ->get();
     }
 }

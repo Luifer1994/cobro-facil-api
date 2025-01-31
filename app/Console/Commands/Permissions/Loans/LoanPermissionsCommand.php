@@ -56,7 +56,12 @@ class LoanPermissionsCommand extends Command
                     "name"        => 'loans-update',
                     "description" => 'Actualizar Prestamos',
                     "group"       => 'Prestamos',
-                ]
+                ],
+                [
+                    "name"        => 'loans-list-all',
+                    "description" => 'Listar todos los Prestamos',
+                    "group"       => 'Prestamos',
+                ],
             ];
             $role        = Role::where('name', 'super-admin')->first();
             $roleSystem = Role::where('name', 'admin')->first();

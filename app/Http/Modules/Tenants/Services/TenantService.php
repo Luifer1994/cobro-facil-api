@@ -218,8 +218,7 @@ class TenantService extends BaseService
     {
         try {
             $tenant = $this->tenantRepository->getTenantById($id);
-            if (!$tenant)
-                return Result::failure('Error al actualizar el tenant', "El tenant $id no existe");
+            if (!$tenant) return Result::failure('Error al actualizar el tenant', "El tenant $id no existe");
 
             $updateData = $request->all();
 

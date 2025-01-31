@@ -117,7 +117,7 @@ class TenantController extends BaseController
             $result = $this->tenantService->updateTenant($newRequest, $id);
             return $this->response($result);
         } catch (\Throwable $th) {
-            return $this->response(Result::failure(error: 'Error al actualizar el inquilino', message: $th->getMessage()));
+            return $this->response(Result::failure(error: 'Error al actualizar el inquilino '.$th->getMessage(), message: $th->getMessage()));
         }
     }
 

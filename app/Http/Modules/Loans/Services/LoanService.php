@@ -81,8 +81,8 @@ class LoanService extends BaseService
         } catch (\Throwable $th) {
             DB::rollBack();
             return Result::failure(
-                error: 'Error: ' . $th->getMessage(),
-                message: 'Error al crear préstamo'
+                error: 'Error al crear préstamo',
+                message: $th->getMessage()
             );
         }
     }
@@ -101,17 +101,19 @@ class LoanService extends BaseService
         string $paymentFrequency
     ): array {
         $currentDate = $startDate->copy();
+
+        // Corregir la definición del intervalo
         $interval = match ($paymentFrequency) {
-            'daily' => 'addDay',
-            'weekly' => 'addWeek',
-            'biweekly' => 'addWeeks(2)',
-            'monthly' => 'addMonth',
+            'daily' => ['method' => 'addDay', 'params' => []],
+            'weekly' => ['method' => 'addWeek', 'params' => []],
+            'biweekly' => ['method' => 'addWeeks', 'params' => [2]],
+            'monthly' => ['method' => 'addMonth', 'params' => []],
             default => throw new \InvalidArgumentException("Frecuencia inválida")
         };
 
         $dueDates = [];
         for ($i = 0; $i < $installmentsCount; $i++) {
-            $currentDate->{$interval}();
+            $currentDate->{$interval['method']}(...$interval['params']);
             $dueDates[] = $currentDate->format('Y-m-d');
         }
 

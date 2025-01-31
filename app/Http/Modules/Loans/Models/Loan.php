@@ -11,9 +11,9 @@ use App\Http\Modules\Users\Models\User;
 
 class Loan extends BaseModel
 {
-    use HasFactory;
+	use HasFactory;
 
-    protected $table = 'loans';
+	protected $table = 'loans';
 
 	protected $casts = [
 		'amount' => 'float',
@@ -38,6 +38,89 @@ class Loan extends BaseModel
 		'user_id',
 		'description'
 	];
+
+	/**
+	 * The attributes that should be appended to the model's array form.
+	 *
+	 * @var array
+	 */
+	protected $appends = [
+		'status_es',
+		'color_status',
+		'interest_type_es',
+		'color_interest_type',
+		'payment_frequency_es',
+		'color_payment_frequency',
+	];
+
+	/**
+	 * Accessor for the status_es attribute.
+	 *
+	 * @return string
+	 */
+	public function getStatusEsAttribute(): string
+	{
+		return match ($this->status) {
+			'active' => 'Activo',
+			'finished' => 'Finalizado',
+			'defaulted' => 'En Mora'
+		};
+	}
+
+	/**
+	 * Accessor for the interest_type_es attribute.
+	 *
+	 * @return string
+	 */
+	public function getInterestTypeEsAttribute(): string
+	{
+		return match ($this->interest_type) {
+			'fixed' => 'Fijo',
+			'reducing' => 'Reduciendo'
+		};
+	}
+
+	/**
+	 * Accessor for the payment_frequency_es attribute.
+	 *
+	 * @return string
+	 */
+	public function getPaymentFrequencyEsAttribute(): string
+	{
+		return match ($this->payment_frequency) {
+			'daily' => 'Diaria',
+			'weekly' => 'Semanal',
+			'biweekly' => 'Quincenal',
+			'monthly' => 'Mensual'
+		};
+	}
+
+	public function getColorStatusAttribute(): string
+	{
+		return match ($this->status) {
+			'active' => 'primary',
+			'finished' => 'success',
+			'defaulted' => 'error'
+		};
+	}
+
+	public function getColorInterestTypeAttribute(): string
+	{
+		return match ($this->interest_type) {
+			'fixed' => 'info',
+			'reducing' => 'error'
+		};
+	}
+
+	public function getColorPaymentFrequencyAttribute(): string
+	{
+		return match ($this->payment_frequency) {
+			'daily' => 'primary',
+			'weekly' => 'success',
+			'biweekly' => 'warning',
+			'monthly' => 'error'
+		};
+	}
 
 	public function client()
 	{
