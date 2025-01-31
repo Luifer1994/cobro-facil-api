@@ -35,7 +35,8 @@ class Loan extends BaseModel
 		'outstanding_balance',
 		'status',
 		'client_id',
-		'user_id'
+		'user_id',
+		'description'
 	];
 
 	public function client()

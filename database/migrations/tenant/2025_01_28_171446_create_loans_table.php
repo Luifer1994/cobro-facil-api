@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('start_date')->comment('Fecha de inicio');
             $table->decimal('outstanding_balance', 12, 2)->default(0)->comment('Saldo pendiente, este se debe recalcular  que se registre un pago');
             $table->enum('status', ['active','finished','defaulted'])->default('active')->comment('Estado de la deuda');
+            $table->string('description')->nullable()->comment('Descripción del préstamo');
             $table->foreignId('client_id')->constrained('clients')->comment('Cliente al que se le debe el préstamo');
             $table->foreignId('user_id')->constrained('users')->comment('Usuario que creó la deuda');
             $table->timestamps();

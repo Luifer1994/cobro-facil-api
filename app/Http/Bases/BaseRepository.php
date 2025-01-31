@@ -139,4 +139,15 @@ class BaseRepository
     {
         return $this->model->insert($data);
     }
+
+    /**
+     * Insert data.
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function insert(array $data): bool
+    {
+        return $this->model->insert($data);
+    }
 }

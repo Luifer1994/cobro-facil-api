@@ -4,9 +4,10 @@ namespace App\Http\Modules\Loans\Controllers;
 
 use App\Http\Bases\BaseController;
 use App\Http\Modules\Loans\Repositories\LoanRepository;
+use App\Http\Modules\Loans\Requests\CreateLoanRequest;
 use App\Http\Modules\Loans\Services\LoanService;
+use App\Support\Result;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
 class LoanController extends BaseController
 {
@@ -23,5 +24,19 @@ class LoanController extends BaseController
         //
     }
 
-    // Aquí puedes añadir tus métodos (index, show, store, update, destroy, etc.)
+    /**
+     * Create a new loan.
+     * 
+     * @param  CreateLoanRequest $request
+     * @return JsonResponse
+     */
+    public function store(CreateLoanRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->loanService->create($request->validated());
+            return $this->response($result);
+        } catch (\Throwable $th) {
+            return $this->response(Result::failure(error: 'Error al crear el prestamo', message: $th->getMessage()));
+        }
+    }
 }

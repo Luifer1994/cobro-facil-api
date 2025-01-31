@@ -29,4 +29,7 @@ Route::middleware([
     require base_path('routes/api/DocumentTypes/DocumentTypesRoutes.php');
     require base_path('routes/api/RolesAndPermissions/RolesAndPermissionRoutes.php');
     require base_path('routes/api/Clients/ClientRoutes.php');
+    require base_path('routes/api/Loans/LoansRoutes.php');
+   /*  require base_path('routes/api/Installments/InstallmentsRoutes.php');
+    require base_path('routes/api/Payments/PaymentsRoutes.php'); */
 });

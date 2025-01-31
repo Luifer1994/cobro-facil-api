@@ -54,5 +54,6 @@ class CreatePermissionsTenantsCommand extends Command
         $this->call('create-permission-document-types');
         $this->call('create-permission-modules');
         $this->call('create-permission-clients');
+        $this->call('create-permission-loans');
     }
 }
