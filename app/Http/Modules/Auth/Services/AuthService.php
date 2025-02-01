@@ -78,4 +78,20 @@ class AuthService extends BaseService
 
         return array_merge($validatePermissions, $permissionsGroup);
     }
+
+    /**
+     * Function to logout user.
+     *
+     * @return Result
+     */
+    public function logout(): Result
+    {
+        try {
+            auth()->user()->tokens()->delete();
+            return Result::success('Sesión cerrada exitosamente');
+        } catch (\Throwable $th) {
+            custom_log($th, __CLASS__);
+            return Result::failure('Error al intentar cerrar sesión', $th->getMessage());
+        }
+    }
 }

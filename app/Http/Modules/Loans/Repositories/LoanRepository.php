@@ -41,7 +41,7 @@ class LoanRepository extends BaseRepository
             )
             ->with([
                 'client' => fn($query) => $query->select('id', 'name', 'email', 'phone', 'address', 'document', 'document_type_id')
-                ->with('document_type:id,name,code'),
+                    ->with('document_type:id,name,code'),
                 'user:id,name,email,phone',
                 'installments' => fn($query) => $query->where('is_paid', false)->where('due_date', '>', Carbon::now())
                     ->orderBy('due_date', 'asc')->limit(1)->select('loan_id', 'due_date', 'expected_amount')
@@ -68,5 +68,45 @@ class LoanRepository extends BaseRepository
             )
             ->orderBy('id', 'desc')
             ->paginate($limit);
+    }
+
+    /**
+     * Find loan by id.
+     *
+     * @param  int  $id
+     * @return Loan|null
+     */
+    public function findById(int $id): ?Loan
+    {
+        return $this->loanModel->select(
+            'id',
+            'amount',
+            'interest_rate',
+            'interest_type',
+            'payment_frequency',
+            'installments_count',
+            'start_date',
+            'outstanding_balance',
+            'status',
+            'client_id',
+            'user_id'
+        )
+            ->with([
+                'client' => fn($query) => $query->select('id', 'name', 'email', 'phone', 'address', 'document', 'document_type_id')
+                    ->with('document_type:id,name,code'),
+                'user:id,name,email,phone',
+                'installments' => fn($query) => $query->where('is_paid', false)->where('due_date', '>', Carbon::now())
+                    ->orderBy('due_date', 'asc')->limit(1)->select('loan_id', 'due_date', 'expected_amount')
+            ])
+            ->withCount([
+                'installments as installments_total_count',
+                'installments as installments_paid_count' => fn($query) => $query->where('is_paid', true),
+                'installments as installments_due_count' => fn($query) => $query->where('is_paid', false)->where('due_date', '<', Carbon::now()),
+                'installments as installments_pending_count' => fn($query) => $query->where('is_paid', false)->where('due_date', '>', Carbon::now())
+            ])
+            ->withSum(['installments as total_paid' => fn($query) => $query->where('is_paid', true)], 'expected_amount')
+            ->withSum(['installments as total_overdue' => fn($query) => $query->where('is_paid', false)->where('due_date', '<', Carbon::now())], 'expected_amount')
+            ->withMax('installments as estimated_end_date', 'due_date')
+            ->find($id);
     }
 }

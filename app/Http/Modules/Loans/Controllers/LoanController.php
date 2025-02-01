@@ -57,4 +57,21 @@ class LoanController extends BaseController
             return $this->response(Result::failure(error: 'Error al obtener las prestamos '.$th->getMessage(), message: $th->getMessage()));
         }
     }
+
+    /**
+     * Show loan.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function show(int $id): JsonResponse
+    {
+        try {
+            $loan = $this->loanRepository->findById($id);
+            if (!$loan) return $this->response(Result::failure(error: 'Prestamo no encontrado', message: 'Prestamo no encontrado'));
+            return $this->response(Result::success('Prestamo obtenido con éxito', $loan));
+        } catch (\Throwable $th) {
+            return $this->response(Result::failure(error: 'Error al obtener el prestamo', message: $th->getMessage()));
+        }
+    }
 }

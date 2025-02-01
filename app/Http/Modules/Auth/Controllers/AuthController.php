@@ -29,4 +29,19 @@ class AuthController extends BaseController
         }
     }
 
+    /**
+     * Function to logout a user.
+     *
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
+    {
+        try {
+            $result = $this->authService->logout();
+            return $this->response($result);
+        } catch (\Throwable $th) {
+            return $this->response(Result::failure(error: 'Error al intentar cerrar sesión', message: $th->getMessage()));
+        }
+    }
+
 }
