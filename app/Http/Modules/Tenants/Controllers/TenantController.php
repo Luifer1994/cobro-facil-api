@@ -113,11 +113,15 @@ class TenantController extends BaseController
 
             $validatedData = $request->validated();
             $newRequest = new UpdateTenantRequest($validatedData);
-            $newRequest->files->set('logo', $request->file('logo'));
+
+            if ($request->hasFile('logo')) {
+                $newRequest->files->set('logo', $request->file('logo'));
+            }
+
             $result = $this->tenantService->updateTenant($newRequest, $id);
             return $this->response($result);
         } catch (\Throwable $th) {
-            return $this->response(Result::failure(error: 'Error al actualizar el inquilino '.$th->getMessage(), message: $th->getMessage()));
+            return $this->response(Result::failure(error: 'Error al actualizar el inquilino ' . $th->getMessage(), message: $th->getMessage()));
         }
     }
 
