@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Modules\Tenants\Models\Tenant;
+use App\Http\Modules\Tenants\Models\TenantUserEmail;
 use App\Http\Modules\Tenants\Repositories\TenantUserEmailRepository;
 use App\Http\Modules\Tenants\Repositories\TenantRepository;
 use App\Http\Modules\Tenants\Requests\RenewTenantPlanRequest;
@@ -45,12 +46,12 @@ class TenantService extends BaseService
      * @param CreateTenantRequest $request
      * @return Result
      */
-    public function createTenant(CreateTenantRequest $request): Result
+    public function createTenant(CreateTenantRequest $request, bool $isApproved = false): Result
     {
         if ($request->hasFile('logo')) $request->files->set('logo', $request->file('logo'));
 
         try {
-            $userCreatedId = Auth::user()->id;
+            $userCreatedId = $isApproved ? Auth::user()->id : 1;
             $logo = null;
             if ($request->hasFile('logo')) {
                 $logo = $this->uploadFile($request->file('logo'), 'tenants/logos');
@@ -60,7 +61,8 @@ class TenantService extends BaseService
             $this->newTenant = $this->tenantRepository->create(
                 array_merge($request->validated(), [
                     'user_created_id' => $userCreatedId,
-                    'logo' => $logo
+                    'logo' => $logo,
+                    'is_approved' => $isApproved
                 ])
             );
 
@@ -95,11 +97,11 @@ class TenantService extends BaseService
                 $role = $this->roleRepository->findByName('admin');
                 $newUser->assignRole($role);
 
-                $this->tenantUserEmailRepository->create([
+                $this->tenantUserEmailRepository->save(new TenantUserEmail([
                     'tenant_id' => $this->newTenant->id,
                     'email' => $request->email,
                     'is_active' => true
-                ]);
+                ]));
             });
 
             return Result::success('Registro creado con éxito');
@@ -163,7 +165,7 @@ class TenantService extends BaseService
         }
     }
 
-     /**
+    /**
      * Renew Tenant plan.
      *
      * @param RenewTenantPlanRequest $request
@@ -269,9 +271,11 @@ class TenantService extends BaseService
 
             return Result::success('Tenant obtenido con éxito', $tenant);
         } catch (\Throwable $th) {
-           custom_log($th, __CLASS__);
-            return Result::failure('Error al obtener el tenant '. $th->getMessage(),
-            $th->getMessage());
+            custom_log($th, __CLASS__);
+            return Result::failure(
+                'Error al obtener el tenant ' . $th->getMessage(),
+                $th->getMessage()
+            );
         }
     }
 

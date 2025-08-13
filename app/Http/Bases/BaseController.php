@@ -19,7 +19,7 @@ class BaseController extends Controller
     {
         if ($result->isSuccess()) {
             return Response::apiJson(
-                message: $result->getMessage(),
+                message: $result->getMessage() ?? '',
                 data: $result->getValue(),
                 statusCode: JsonResponse::HTTP_OK
             );

@@ -28,7 +28,7 @@ class TenantController extends BaseController
     public function store(CreateTenantRequest $request): JsonResponse
     {
         try {
-            $result = $this->tenantService->createTenant($request);
+            $result = $this->tenantService->createTenant($request, true);
             return $this->response($result);
         } catch (\Throwable $th) {
             return $this->response(Result::failure(error: 'Error al crear el registro ' . $th->getMessage(), message: $th->getMessage()));
@@ -141,6 +141,16 @@ class TenantController extends BaseController
             return $this->response(Result::success('El estado del inquilino ha sido actualizado.', $tenant));
         } catch (\Throwable $th) {
             return $this->response(Result::failure(error: 'Error al cambiar el estado del inquilino', message: $th->getMessage()));
+        }
+    }
+
+    public function registerPublic(CreateTenantRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->tenantService->createTenant($request, false);
+            return $this->response($result);
+        } catch (\Throwable $th) {
+            return $this->response(Result::failure(error: 'Error al crear el inquilino', message: $th->getMessage()));
         }
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Modules\Tenants\Models;
 
 use App\Http\Bases\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class TenantUserEmail extends BaseModel
 {
     use HasFactory;
@@ -16,4 +16,9 @@ class TenantUserEmail extends BaseModel
         'email',
         'is_active'
     ];
+
+    public function tenants(): HasMany
+    {
+        return $this->hasMany(Tenant::class, 'id', 'tenant_id');
+    }
 }

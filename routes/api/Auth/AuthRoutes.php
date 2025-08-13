@@ -13,5 +13,7 @@ Route::prefix('auth')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
         Route::get('logout', 'logout');
+        Route::post('validate-email', 'validateEmail');
+        Route::post('login-with-tenant', 'loginWithTenant');
     });
 });

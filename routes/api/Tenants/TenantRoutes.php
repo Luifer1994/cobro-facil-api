@@ -18,8 +18,10 @@ Route::prefix('tenants')->group(function () {
             Route::post('update/{id}', 'update')->middleware('permission:tenants-update');
             Route::post('renovate-plan', 'renovatePlan')->middleware('permission:tenants-renovate-plan');
             Route::post('change-status/{id}', 'changeStatus')->middleware('permission:tenants-change-status');
+
         });
     });
 
     Route::get('get-tenant/{id}', [TenantController::class, 'validateActiveTenant']);
+    Route::post('register-public', [TenantController::class, 'registerPublic']);
 });
