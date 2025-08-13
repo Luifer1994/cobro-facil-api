@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Modules\Tenants\Models\Tenant;
+use App\Http\Modules\Tenants\Repositories\TenantUserEmailRepository;
 use App\Http\Modules\Tenants\Repositories\TenantRepository;
 use App\Http\Modules\Tenants\Requests\RenewTenantPlanRequest;
 use App\Http\Modules\Tenants\Requests\UpdateTenantRequest;
@@ -35,6 +36,7 @@ class TenantService extends BaseService
         protected RoleRepository $roleRepository,
         protected PlanTenantRepository $planTenantRepository,
         protected PlanRepository $planRepository,
+        protected TenantUserEmailRepository $tenantUserEmailRepository
     ) {}
 
     /**
@@ -92,6 +94,12 @@ class TenantService extends BaseService
                 ]);
                 $role = $this->roleRepository->findByName('admin');
                 $newUser->assignRole($role);
+
+                $this->tenantUserEmailRepository->create([
+                    'tenant_id' => $this->newTenant->id,
+                    'email' => $request->email,
+                    'is_active' => true
+                ]);
             });
 
             return Result::success('Registro creado con éxito');

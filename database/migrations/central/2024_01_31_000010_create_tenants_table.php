@@ -27,6 +27,7 @@ class CreateTenantsTable extends Migration
             $table->char('primary_color', 10)->nullable();
             $table->char('secondary_color', 10)->nullable();
             $table->boolean('is_active')->default(true);
+            $table->boolean('is_approved')->default(false)->comment('Is the tenant approved?');
             $table->foreignId('document_type_id')->constrained('document_types');
             $table->unique(['document_type_id', 'document_number']);
             $table->foreignId('user_created_id')->constrained('users');

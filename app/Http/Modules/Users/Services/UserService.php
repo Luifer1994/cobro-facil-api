@@ -6,6 +6,7 @@ use App\Http\Bases\BaseService;
 use App\Http\Modules\Users\Repositories\UserRepository;
 use App\Http\Modules\Users\Requests\CreateUserRequest;
 use App\Http\Modules\RolesAndPermissions\Repositories\RoleRepository;
+use App\Http\Modules\Tenants\Repositories\TenantUserEmailRepository;
 use App\Http\Modules\Users\Requests\ChangePasswordRequest;
 use App\Http\Modules\Users\Requests\UpdateUserRequest;
 use App\Support\Result;
@@ -16,7 +17,8 @@ class UserService extends BaseService
 {
     public function __construct(
         private UserRepository $userRepository,
-        private RoleRepository $roleRepository
+        private RoleRepository $roleRepository,
+        private TenantUserEmailRepository $tenantUserEmailRepository
     ) {}
 
     /**
@@ -34,6 +36,11 @@ class UserService extends BaseService
             $user = $this->userRepository->create($data);
             $role = $this->roleRepository->find($request->role_id);
             $user->assignRole($role);
+            $this->tenantUserEmailRepository->create([
+                'tenant_id' => tenant()->id,
+                'email' => $user->email,
+                'is_active' => true
+            ]);
             DB::commit();
             return Result::success(message: 'Registro creado con éxito');
         } catch (\Throwable $th) {
