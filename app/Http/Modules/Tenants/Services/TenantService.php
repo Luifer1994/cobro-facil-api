@@ -24,6 +24,7 @@ use App\Http\Modules\Tenants\Requests\UpdateTenantRequest;
 use App\Http\Modules\Users\Repositories\UserRepository;
 use Carbon\Carbon;
 use Database\Seeders\TenantSeeder;
+use App\Http\Modules\Tenants\Repositories\TemporalTenantRepository;
 
 class TenantService extends BaseService
 {
@@ -37,7 +38,8 @@ class TenantService extends BaseService
         protected RoleRepository $roleRepository,
         protected PlanTenantRepository $planTenantRepository,
         protected PlanRepository $planRepository,
-        protected TenantUserEmailRepository $tenantUserEmailRepository
+        protected TenantUserEmailRepository $tenantUserEmailRepository,
+        protected TemporalTenantRepository $temporalTenantRepository
     ) {}
 
     /**
@@ -161,7 +163,7 @@ class TenantService extends BaseService
             return Result::success('Tenants obtenidos con éxito', $this->tenantRepository->getAllTenants($limit, $search));
         } catch (\Throwable $th) {
             custom_log($th, __CLASS__, 'getAllTenants');
-            return Result::failure('Error al obtener los tenants', $th->getMessage());
+            return Result::failure('Error al obtener los tenants'. $th->getMessage(), $th->getMessage());
         }
     }
 

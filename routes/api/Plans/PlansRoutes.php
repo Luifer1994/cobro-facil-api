@@ -21,5 +21,5 @@ Route::prefix('plans')->group(function () {
         });
     });
 
-    Route::get('list-actives', [PlanController::class, 'allActive']);
+    Route::get('list-active', [PlanController::class, 'allActive']);
 });

@@ -8,6 +8,8 @@ use App\Http\Modules\Tenants\Repositories\TenantRepository;
 use App\Http\Modules\Tenants\Requests\CreateTenantRequest;
 use App\Http\Modules\Tenants\Requests\RenewTenantPlanRequest;
 use App\Http\Modules\Tenants\Requests\UpdateTenantRequest;
+use App\Http\Modules\Tenants\Services\ApprovedTemporalTenantService;
+use App\Http\Modules\Tenants\Services\CreateTemporalTenantService;
 use App\Http\Modules\Tenants\Services\TenantService;
 use App\Support\Result;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +18,9 @@ class TenantController extends BaseController
 {
     public function __construct(
         protected TenantService $tenantService,
-        protected TenantRepository $tenantRepository
+        protected TenantRepository $tenantRepository,
+        protected CreateTemporalTenantService $createTemporalTenantService,
+        protected ApprovedTemporalTenantService $approvedTemporalTenantService
     ) {}
 
     /**
@@ -147,7 +151,7 @@ class TenantController extends BaseController
     public function registerPublic(CreateTenantRequest $request): JsonResponse
     {
         try {
-            $result = $this->tenantService->createTenant($request, false);
+            $result = $this->createTemporalTenantService->execute($request);
             return $this->response($result);
         } catch (\Throwable $th) {
             return $this->response(Result::failure(error: 'Error al crear el inquilino', message: $th->getMessage()));
